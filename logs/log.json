@@ -1,0 +1,97 @@
+[
+  {
+    "arquivo": "~/storage/shared/download",
+    "resultado": "Erro - arquivo não existe",
+    "hora": "07/07/2026 09:24:19"
+  },
+  {
+    "arquivo": "~/storage/shared/download/test.txt",
+    "resultado": "Erro - arquivo não existe",
+    "hora": "07/07/2026 09:25:01"
+  },
+  {
+    "arquivo": "/storage/emulated/0/Downtest.txt",
+    "resultado": "Erro - arquivo não existe",
+    "hora": "07/07/2026 09:26:07"
+  },
+  {
+    "arquivo": "/storage/emulated/0/Download/test.txt",
+    "resultado": "Erro - arquivo vazio",
+    "hora": "07/07/2026 09:26:37"
+  },
+  {
+    "arquivo": "/storage/emulated/0/Download/test.txt",
+    "resultado": "Erro - Command '['pandoc', '/storage/emulated/0/Download/test.txt', '-o', '/storage/emulated/0/Download/test.pdf']' returned non-zero exit status 47.",
+    "hora": "07/07/2026 09:27:43"
+  },
+  {
+    "arquivo": "/storage/emulated/0/download/test.txt",
+    "resultado": "Sucesso",
+    "hora": "07/07/2026 09:33:41"
+  },
+  {
+    "arquivo": "/storage/emulated/0/download/images.jpeg",
+    "resultado": "Sucesso",
+    "hora": "07/07/2026 09:34:53"
+  },
+  {
+    "arquivo": "storage/emulated/0/Download/test.txt",
+    "resultado": "Erro - arquivo não existe",
+    "hora": "07/07/2026 09:35:35"
+  },
+  {
+    "arquivo": "/storage/emulated/0/Download/test.txt",
+    "resultado": "Sucesso",
+    "hora": "07/07/2026 09:36:54"
+  },
+  {
+    "arquivo": "/storage/emulated/0/Download/declara",
+    "resultado": "Erro - arquivo não existe",
+    "hora": "07/07/2026 15:03:37"
+  },
+  {
+    "arquivo": "/storage/emulated/0/Download/declara.jpg",
+    "resultado": "Sucesso",
+    "hora": "07/07/2026 15:04:13"
+  },
+  {
+    "arquivo": "/storage/emulated/0/download/images.jpeg",
+    "resultado": "Sucesso",
+    "hora": "07/07/2026 22:15:03"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/images-1.jpeg",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 00:47:28"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/images.jpeg",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 00:50:00"
+  },
+  {
+    "arquivo": "ex",
+    "resultado": "Erro - arquivo não existe",
+    "hora": "08/07/2026 00:58:50"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/relatorio_darlyson_ribeiro.pdf",
+    "resultado": "Erro - All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters",
+    "hora": "08/07/2026 01:06:49"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/documents/teste.pdf",
+    "resultado": "Erro - formato não compatível",
+    "hora": "08/07/2026 01:07:32"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/documents/teste.pdf",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 01:07:52"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/godzilla.jpg",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 07:37:09"
+  }
+]
