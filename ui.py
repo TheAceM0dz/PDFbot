@@ -3,27 +3,28 @@ ui.py - Camada visual do PDFBOT
 Criado por: TheAceModz
 
 Responsável por: banner com gradiente RGB, menus interativos (questionary),
-mensagens estilizadas (rich) e persistência do último caminho usado.
+mensagens estilizadas (rich), persistência do último caminho usado e idioma.
 """
 
 import os
 import json
 import colorsys
+from datetime import datetime
 
 from rich.console import Console
 from rich.text import Text
 from rich.panel import Panel
 from rich.table import Table
 from rich.align import Align
+from rich.rule import Rule
+from rich import box
+from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
 
 import questionary
 from questionary import Style
 
-try:
-    from pyfiglet import Figlet
-    _TEM_FIGLET = True
-except ImportError:
-    _TEM_FIGLET = False
+import historico as _historico
+from idiomas import TEXTOS
 
 console = Console()
 
@@ -37,7 +38,7 @@ ICONES_PASTA = {
 }
 
 # ------------------------------------------------------------------
-# Configuração persistente (último caminho usado)
+# Configuração persistente (último caminho usado + idioma)
 # ------------------------------------------------------------------
 
 def carregar_config():
@@ -61,6 +62,65 @@ def ultimo_diretorio():
 def salvar_ultimo_diretorio(caminho):
     pasta = os.path.dirname(caminho) or caminho
     salvar_config({"ultimo_diretorio": pasta})
+
+
+def nome_seguro(caminho_desejado):
+    """Se já existe um arquivo com esse nome, gera outro nome com
+    carimbo de data/hora em vez de sobrescrever sem avisar."""
+    if not os.path.exists(caminho_desejado):
+        return caminho_desejado
+    pasta, nome = os.path.split(caminho_desejado)
+    base, ext = os.path.splitext(nome)
+    carimbo = datetime.now().strftime("%Y%m%d-%H%M%S")
+    return os.path.join(pasta, f"{base}_{carimbo}{ext}")
+
+
+def arquivo_mais_recente(pasta):
+    """Retorna o caminho do arquivo modificado mais recentemente na pasta,
+    ou None se a pasta estiver vazia/inacessível."""
+    try:
+        candidatos = [
+            os.path.join(pasta, f) for f in os.listdir(pasta)
+            if os.path.isfile(os.path.join(pasta, f))
+        ]
+    except OSError:
+        return None
+    if not candidatos:
+        return None
+    return max(candidatos, key=os.path.getmtime)
+
+
+# ------------------------------------------------------------------
+# Idioma
+# ------------------------------------------------------------------
+
+def idioma_atual():
+    return carregar_config().get("idioma", "pt")
+
+def definir_idioma(codigo):
+    salvar_config({"idioma": codigo})
+
+def t(chave, **kwargs):
+    """Busca o texto traduzido no idioma atual. Aceita placeholders
+    tipo t('msg_saida_padrao', caminho=algo)."""
+    textos = TEXTOS.get(idioma_atual(), TEXTOS["pt"])
+    bruto = textos.get(chave, TEXTOS["pt"].get(chave, chave))
+    return bruto.format(**kwargs) if kwargs else bruto
+
+def perguntar_idioma():
+    escolha = questionary.select(
+        t("idioma_pergunta"),
+        choices=[
+            questionary.Choice(t("idioma_pt"), value="pt"),
+            questionary.Choice(t("idioma_en"), value="en"),
+        ],
+        style=ESTILO_MENU,
+        qmark="🌐",
+    ).ask()
+
+    if escolha:
+        definir_idioma(escolha)
+        print_sucesso(t("idioma_alterado"))
 
 
 # ------------------------------------------------------------------
@@ -88,31 +148,51 @@ def _gradiente(linhas, hue_inicial, span=0.75, sat=0.85):
         texto.append("\n")
     return texto
 
-def _arte_titulo():
-    if _TEM_FIGLET:
-        try:
-            fig = Figlet(font="slant")
-            return fig.renderText("PDFBOT").rstrip("\n").split("\n")
-        except Exception:
-            pass
-    # fallback simples, caso pyfiglet não esteja instalado
-    return [
-        " ____  ____  _____ ____   ___ _____ ",
-        "|  _ \\|  _ \\|  ___| __ ) / _ \\_   _|",
-        "| |_) | | | | |_  |  _ \\| | | || |  ",
-        "|  __/| |_| |  _| | |_) | |_| || |  ",
-        "|_|   |____/|_|   |____/ \\___/ |_|  ",
-    ]
+_FONTE_BLOCO = {
+    "P": ["█████", "█   █", "█████", "█    ", "█    ", "█    "],
+    "D": ["████ ", "█   █", "█   █", "█   █", "█   █", "████ "],
+    "F": ["█████", "█    ", "████ ", "█    ", "█    ", "█    "],
+    "B": ["████ ", "█   █", "████ ", "█   █", "█   █", "████ "],
+    "O": [" ███ ", "█   █", "█   █", "█   █", "█   █", " ███ "],
+    "T": ["█████", "  █  ", "  █  ", "  █  ", "  █  ", "  █  "],
+    " ": ["     ", "     ", "     ", "     ", "     ", "     "],
+}
+
+def _arte_titulo(texto="PDFBOT"):
+    linhas = ["" for _ in range(6)]
+    for letra in texto:
+        padrao = _FONTE_BLOCO.get(letra.upper(), _FONTE_BLOCO[" "])
+        for i in range(6):
+            linhas[i] += padrao[i] + " "
+    return linhas
 
 def banner():
-    """Mostra o título PDFBOT com gradiente estilo RGB (muda a cada exibição)."""
+    """Mostra o título PDFBOT com moldura e gradiente estilo RGB
+    (a cor muda a cada retorno ao menu, não a cada tecla)."""
     hue = _proximo_hue()
     linhas = _arte_titulo()
-    texto_titulo = _gradiente(linhas, hue)
+    texto_titulo = _gradiente(linhas, hue, span=0.9, sat=0.9)
+
+    r, g, b = colorsys.hsv_to_rgb(hue, 0.7, 1.0)
+    cor_moldura = f"#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}"
+
+    conteudo = Align.center(texto_titulo)
 
     console.clear()
-    console.print(Align.center(texto_titulo))
-    console.print(Align.center(Text("by TheAceModz", style="dim italic")))
+    console.print(
+        Panel(
+            conteudo,
+            border_style=cor_moldura,
+            box=box.DOUBLE,
+            padding=(0, 2),
+        )
+    )
+    console.print(Align.center(Text(t("banner_tagline"), style="dim italic")))
+    console.print(Align.center(Text("by TheAceModz", style=f"bold {cor_moldura}")))
+
+    total = len(_historico.carregar_historico())
+    console.print(Rule(style=f"dim {cor_moldura}"))
+    console.print(Align.center(Text(t("banner_stats", total=total), style="dim")))
     console.print()
 
 
@@ -150,7 +230,7 @@ def print_painel(titulo, conteudo, cor="magenta"):
 
 
 # ------------------------------------------------------------------
-# Prompts reaproveitáveis
+# Seleção de pasta/arquivo
 # ------------------------------------------------------------------
 
 def listar_pastas_storage():
@@ -169,14 +249,14 @@ def escolher_pasta_base():
 
     escolhas = []
     if ultimo:
-        escolhas.append(questionary.Choice(f"🕘  Último local usado", value=ultimo))
+        escolhas.append(questionary.Choice(t("pasta_ultimo"), value=ultimo))
     for p in pastas:
         icone = ICONES_PASTA.get(p.lower(), "📁")
         escolhas.append(questionary.Choice(f"{icone}  {p}", value=os.path.join(RAIZ_STORAGE, p)))
-    escolhas.append(questionary.Choice("⌨️  Digitar caminho manualmente", value="__manual__"))
+    escolhas.append(questionary.Choice(t("pasta_manual"), value="__manual__"))
 
     escolha = questionary.select(
-        "Em qual pasta está o arquivo?",
+        t("pasta_pergunta"),
         choices=escolhas,
         style=ESTILO_MENU,
         qmark="📂",
@@ -185,27 +265,61 @@ def escolher_pasta_base():
     return escolha if escolha else RAIZ_STORAGE
 
 
+def escolher_pasta_para_lote():
+    """Como escolher_pasta_base, mas o resultado final tem que ser
+    sempre uma pasta (não um arquivo)."""
+    pasta = escolher_pasta_base()
+    if pasta != "__manual__":
+        return pasta
+
+    caminho = questionary.path(
+        t("pasta_lote_manual_prompt"),
+        default=RAIZ_STORAGE,
+        only_directories=True,
+        style=ESTILO_MENU,
+    ).ask()
+    return caminho.strip() if caminho else RAIZ_STORAGE
+
+
 def perguntar_caminho_arquivo():
     pasta = escolher_pasta_base()
 
     if pasta == "__manual__":
         caminho = questionary.path(
-            "Caminho completo do arquivo:",
+            t("arquivo_manual_prompt"),
             default=RAIZ_STORAGE,
             style=ESTILO_MENU,
         ).ask()
-    else:
-        caminho = questionary.path(
-            "Selecione o arquivo (Tab autocompleta):",
-            default=pasta.rstrip("/") + "/",
-            style=ESTILO_MENU,
-        ).ask()
+        return caminho.strip() if caminho else ""
 
+    recente = arquivo_mais_recente(pasta)
+    if recente:
+        modo = questionary.select(
+            t("arquivo_como_selecionar"),
+            choices=[
+                questionary.Choice(
+                    t("arquivo_usar_recente", nome=os.path.basename(recente)),
+                    value="recente"
+                ),
+                questionary.Choice(t("arquivo_digitar_nome"), value="digitar"),
+            ],
+            style=ESTILO_MENU,
+            qmark="📄",
+        ).ask()
+        if modo == "recente":
+            return recente
+
+    caminho = questionary.path(
+        t("arquivo_selecionar_tab"),
+        default=pasta.rstrip("/") + "/",
+        style=ESTILO_MENU,
+    ).ask()
     return caminho.strip() if caminho else ""
+
 
 def perguntar_caminho_saida(padrao_sugerido):
     quer_custom = questionary.confirm(
-        "Deseja escolher outro nome/local pro PDF?",
+        t("saida_pergunta_custom"),
         default=False,
         style=ESTILO_MENU,
     ).ask()
@@ -214,7 +328,7 @@ def perguntar_caminho_saida(padrao_sugerido):
         return padrao_sugerido
 
     caminho = questionary.path(
-        "Caminho de saída do PDF:",
+        t("saida_caminho"),
         default=padrao_sugerido,
         style=ESTILO_MENU,
     ).ask()
@@ -226,29 +340,54 @@ def perguntar_caminho_saida(padrao_sugerido):
         caminho += ".pdf"
     return caminho
 
+
+# ------------------------------------------------------------------
+# Menus
+# ------------------------------------------------------------------
+
 def menu_principal():
     return questionary.select(
-        "O que você quer fazer?",
+        t("menu_titulo"),
         choices=[
-            questionary.Choice("📄  Converter arquivo para PDF", value="converter"),
-            questionary.Choice("🔁  Converter PDF para outro formato", value="de_pdf"),
-            questionary.Choice("🕘  Ver histórico", value="historico"),
-            questionary.Choice("❌  Sair", value="sair"),
+            questionary.Choice(t("menu_converter"), value="converter"),
+            questionary.Choice(t("menu_de_pdf"), value="de_pdf"),
+            questionary.Choice(t("menu_lote"), value="lote"),
+            questionary.Choice(t("menu_ferramentas"), value="ferramentas"),
+            questionary.Choice(t("menu_historico"), value="historico"),
+            questionary.Choice(t("menu_idioma"), value="idioma"),
+            questionary.Choice(t("menu_sair"), value="sair"),
         ],
         style=ESTILO_MENU,
         qmark="➤",
     ).ask()
 
 
+def menu_ferramentas():
+    return questionary.select(
+        t("ferramentas_titulo"),
+        choices=[
+            questionary.Choice(t("ferramentas_unir"), value="unir"),
+            questionary.Choice(t("ferramentas_comprimir"), value="comprimir"),
+            questionary.Choice(t("ferramentas_extrair"), value="extrair"),
+            questionary.Choice(t("ferramentas_proteger"), value="proteger"),
+            questionary.Choice(t("ferramentas_marca"), value="marca_dagua"),
+            questionary.Choice(t("ferramentas_ocr"), value="ocr"),
+            questionary.Choice(t("ferramentas_voltar"), value="voltar"),
+        ],
+        style=ESTILO_MENU,
+        qmark="🛠️",
+    ).ask()
+
+
 def perguntar_formato_destino():
     """Usado no modo PDF -> outro formato."""
     return questionary.select(
-        "Converter o PDF para qual formato?",
+        t("formato_titulo"),
         choices=[
-            questionary.Choice("🖼️  PNG", value=".png"),
-            questionary.Choice("🖼️  JPEG", value=".jpg"),
-            questionary.Choice("📝  DOCX (Word)", value=".docx"),
-            questionary.Choice("📃  TXT (texto puro)", value=".txt"),
+            questionary.Choice(t("formato_png"), value=".png"),
+            questionary.Choice(t("formato_jpeg"), value=".jpg"),
+            questionary.Choice(t("formato_docx"), value=".docx"),
+            questionary.Choice(t("formato_txt"), value=".txt"),
         ],
         style=ESTILO_MENU,
         qmark="🔁",
@@ -256,10 +395,10 @@ def perguntar_formato_destino():
 
 
 def tabela_historico(itens):
-    tabela = Table(title="Histórico de Conversões", border_style="magenta", expand=False)
-    tabela.add_column("Data/Hora", style="cyan", no_wrap=True)
-    tabela.add_column("Arquivo", style="white")
-    tabela.add_column("Resultado", style="bold")
+    tabela = Table(title=t("historico_titulo"), border_style="magenta", expand=False)
+    tabela.add_column(t("historico_col_data"), style="cyan", no_wrap=True)
+    tabela.add_column(t("historico_col_arquivo"), style="white")
+    tabela.add_column(t("historico_col_resultado"), style="bold")
 
     for item in itens:
         resultado = item["resultado"]
@@ -267,3 +406,90 @@ def tabela_historico(itens):
         tabela.add_row(item["hora"], item["arquivo"], f"[{estilo}]{resultado}[/{estilo}]")
 
     return tabela
+
+
+# ------------------------------------------------------------------
+# Prompts das ferramentas de PDF
+# ------------------------------------------------------------------
+
+def perguntar_lista_pdfs_para_unir():
+    """Pergunta arquivos um por um até o usuário dizer 'não tenho mais'."""
+    caminhos = []
+    while True:
+        pasta = escolher_pasta_base()
+        default = "" if pasta == "__manual__" else pasta.rstrip("/") + "/"
+        caminho = questionary.path(
+            t("unir_arquivo_n", n=len(caminhos) + 1),
+            default=default,
+            style=ESTILO_MENU,
+        ).ask()
+        if caminho:
+            caminhos.append(caminho.strip())
+            print_sucesso(t("unir_adicionado", caminho=caminho.strip()))
+        continuar = questionary.confirm(
+            t("unir_outro"), default=len(caminhos) < 2, style=ESTILO_MENU
+        ).ask()
+        if not continuar:
+            break
+    return caminhos
+
+
+def perguntar_nivel_compressao():
+    return questionary.select(
+        t("compressao_titulo"),
+        choices=[
+            questionary.Choice(t("compressao_leve"), value="prepress"),
+            questionary.Choice(t("compressao_medio"), value="printer"),
+            questionary.Choice(t("compressao_forte"), value="ebook"),
+            questionary.Choice(t("compressao_maxima"), value="screen"),
+        ],
+        style=ESTILO_MENU,
+        qmark="🗜️",
+    ).ask()
+
+
+def perguntar_intervalo_paginas():
+    return questionary.text(
+        t("paginas_pergunta"),
+        style=ESTILO_MENU,
+    ).ask()
+
+
+def perguntar_senha():
+    return questionary.password(
+        t("senha_pergunta"),
+        style=ESTILO_MENU,
+    ).ask()
+
+
+def perguntar_texto_marca_dagua():
+    return questionary.text(
+        t("marca_texto_pergunta"),
+        default="CONFIDENCIAL",
+        style=ESTILO_MENU,
+    ).ask()
+
+
+def perguntar_idioma_ocr():
+    return questionary.select(
+        t("ocr_idioma_pergunta"),
+        choices=[
+            questionary.Choice(t("ocr_portugues"), value="por"),
+            questionary.Choice(t("ocr_ingles"), value="eng"),
+        ],
+        style=ESTILO_MENU,
+        qmark="🔍",
+    ).ask()
+
+
+def barra_progresso(total, descricao=None):
+    """Retorna um contexto de progress bar do rich pronto pra usar em loop."""
+    if descricao is None:
+        descricao = t("status_lote")
+    return Progress(
+        TextColumn("[bold cyan]" + descricao + "[/bold cyan]"),
+        BarColumn(),
+        TextColumn("{task.completed}/{task.total}"),
+        TimeRemainingColumn(),
+        console=console,
+    )

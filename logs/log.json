@@ -93,5 +93,50 @@
     "arquivo": "/data/data/com.termux/files/home/storage/downloads/godzilla.jpg",
     "resultado": "Sucesso",
     "hora": "08/07/2026 07:37:09"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/shared/lotes pdf/testes(1).txt",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 08:38:32"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/shared/lotes pdf/testes(2).txt",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 08:38:38"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/shared/lotes pdf/testes(3).txt",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 08:38:43"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/shared/lotes pdf/testes(4).txt",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 08:38:48"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/shared/lotes pdf/testes(5).txt",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 08:38:54"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/shared/lotes pdf/testes(6).txt",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 08:38:59"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/shared/lotes pdf/testes(7).txt",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 08:39:05"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/shared/lotes pdf/testes(8).txt",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 08:39:10"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/documents",
+    "resultado": "Erro - formato não compatível",
+    "hora": "08/07/2026 08:47:13"
   }
 ]

@@ -1,0 +1,268 @@
+"""
+idiomas.py - Textos da interface do PDFBOT em português e inglês
+Criado por: TheAceModz
+"""
+
+TEXTOS = {
+    "pt": {
+        # Banner
+        "banner_tagline": "Conversor de arquivos • Termux Edition",
+        "banner_stats": "📊 {total} conversão(ões) realizada(s) até agora",
+
+        # Menu principal
+        "menu_titulo": "O que você quer fazer?",
+        "menu_converter": "📄  Converter arquivo para PDF",
+        "menu_de_pdf": "🔁  Converter PDF para outro formato",
+        "menu_lote": "📦  Conversão em lote (pasta inteira)",
+        "menu_ferramentas": "🛠️  Ferramentas de PDF",
+        "menu_historico": "🕘  Ver histórico",
+        "menu_idioma": "🌐  Idioma / Language",
+        "menu_sair": "❌  Sair",
+
+        # Submenu ferramentas
+        "ferramentas_titulo": "Qual ferramenta de PDF?",
+        "ferramentas_unir": "🧩  Unir vários PDFs em um só",
+        "ferramentas_comprimir": "🗜️  Comprimir PDF (reduzir tamanho)",
+        "ferramentas_extrair": "✂️  Extrair páginas específicas",
+        "ferramentas_proteger": "🔒  Proteger com senha",
+        "ferramentas_marca": "💧  Adicionar marca d'água",
+        "ferramentas_ocr": "🔍  OCR (tornar PDF pesquisável)",
+        "ferramentas_voltar": "↩️  Voltar",
+
+        # Formato de destino (PDF -> outro)
+        "formato_titulo": "Converter o PDF para qual formato?",
+        "formato_png": "🖼️  PNG",
+        "formato_jpeg": "🖼️  JPEG",
+        "formato_docx": "📝  DOCX (Word)",
+        "formato_txt": "📃  TXT (texto puro)",
+
+        # Seleção de pasta/arquivo
+        "pasta_pergunta": "Em qual pasta está o arquivo?",
+        "pasta_ultimo": "🕘  Último local usado",
+        "pasta_manual": "⌨️  Digitar caminho manualmente",
+        "pasta_lote_manual_prompt": "Caminho completo da pasta:",
+        "arquivo_manual_prompt": "Caminho completo do arquivo:",
+        "arquivo_como_selecionar": "Como quer selecionar o arquivo?",
+        "arquivo_usar_recente": "📌  Usar o mais recente ({nome})",
+        "arquivo_digitar_nome": "⌨️  Escolher/digitar o nome",
+        "arquivo_selecionar_tab": "Selecione o arquivo (Tab autocompleta):",
+
+        # Saída
+        "saida_pergunta_custom": "Deseja escolher outro nome/local pro PDF?",
+        "saida_caminho": "Caminho de saída do PDF:",
+
+        # Histórico
+        "historico_titulo": "Histórico de Conversões",
+        "historico_col_data": "Data/Hora",
+        "historico_col_arquivo": "Arquivo",
+        "historico_col_resultado": "Resultado",
+        "historico_vazio": "Nenhuma conversão registrada ainda.",
+
+        # Ferramentas - prompts específicos
+        "unir_arquivo_n": "Arquivo #{n} (Tab autocompleta):",
+        "unir_adicionado": "Adicionado: {caminho}",
+        "unir_outro": "Adicionar outro PDF?",
+        "compressao_titulo": "Qual nível de compressão?",
+        "compressao_leve": "🔹  Leve (melhor qualidade, prepress)",
+        "compressao_medio": "🔸  Médio (impressora, printer)",
+        "compressao_forte": "🔻  Forte (ebook, bom equilíbrio)",
+        "compressao_maxima": "⚡  Máxima (menor arquivo, tela/screen)",
+        "paginas_pergunta": "Quais páginas? (ex: 1-3,5,8-10)",
+        "senha_pergunta": "Digite a senha para proteger o PDF:",
+        "marca_texto_pergunta": "Texto da marca d'água:",
+        "ocr_idioma_pergunta": "Idioma do texto no PDF (pro OCR)?",
+        "ocr_portugues": "🇧🇷  Português",
+        "ocr_ingles": "🇺🇸  Inglês",
+
+        # Escolha de idioma
+        "idioma_pergunta": "Escolha o idioma / Choose the language:",
+        "idioma_pt": "🇧🇷  Português",
+        "idioma_en": "🇺🇸  English",
+        "idioma_alterado": "Idioma alterado para Português.",
+
+        # Spinners
+        "status_convertendo": "Convertendo...",
+        "status_unindo": "Unindo PDFs...",
+        "status_comprimindo": "Comprimindo...",
+        "status_extraindo": "Extraindo páginas...",
+        "status_protegendo": "Protegendo PDF...",
+        "status_marca": "Adicionando marca d'água...",
+        "status_ocr": "Rodando OCR (pode demorar)...",
+        "status_lote": "Convertendo",
+
+        # Mensagens gerais (main.py)
+        "msg_saida_padrao": "Saída padrão: {caminho}",
+        "msg_nenhum_caminho": "Nenhum caminho informado.",
+        "msg_arquivo_nao_existe": "Arquivo não existe.",
+        "msg_arquivo_vazio": "Arquivo está vazio.",
+        "msg_extensao_detectada": "Extensão detectada: {ext}",
+        "msg_formato_incompativel": "Formato não compatível.",
+        "msg_pasta_destino_inexistente": "A pasta de destino não existe.",
+        "msg_pdf_sucesso": "PDF criado com sucesso: {caminho}",
+        "msg_arquivo_sucesso": "Arquivo criado com sucesso: {caminho}",
+        "msg_sem_permissao": "Sem permissão pra ler ou escrever o arquivo.",
+        "msg_ferramenta_ausente_pandoc": "Alguma ferramenta necessária (ex: pandoc) não foi encontrada.",
+        "msg_erro_converter": "Erro ao converter: {erro}",
+        "msg_nao_e_pdf": "Esse arquivo não é um PDF.",
+        "msg_nenhum_formato": "Nenhum formato de destino escolhido.",
+        "msg_ferramenta_ausente_poppler": "Alguma ferramenta necessária não foi encontrada (instale com: pkg install poppler).",
+        "msg_lib_ausente_docx": "Falta uma biblioteca pra essa conversão (instale com: pip install python-docx).",
+        "msg_nenhum_arquivo_compativel": "Nenhum arquivo compatível encontrado nessa pasta.",
+        "msg_lote_encontrados": "{n} arquivo(s) encontrado(s). Convertendo...",
+        "msg_lote_sucesso": "{n} convertido(s) com sucesso.",
+        "msg_lote_falhas": "{n} falharam (veja o histórico pra detalhes).",
+        "msg_unir_minimo": "Selecione pelo menos 2 PDFs pra unir.",
+        "msg_unir_sucesso": "PDFs unidos em: {caminho}",
+        "msg_erro_unir": "Erro ao unir: {erro}",
+        "msg_pdf_invalido": "Selecione um PDF válido.",
+        "msg_comprimir_sucesso": "PDF comprimido: {caminho} ({reducao:.0f}% menor)",
+        "msg_ghostscript_ausente": "Ghostscript não encontrado (instale com: pkg install ghostscript).",
+        "msg_erro_comprimir": "Erro ao comprimir: {erro}",
+        "msg_paginas_nao_informadas": "Nenhum intervalo de páginas informado.",
+        "msg_extrair_sucesso": "Páginas extraídas em: {caminho}",
+        "msg_erro_extrair": "Erro ao extrair páginas: {erro}",
+        "msg_senha_nao_informada": "Nenhuma senha informada.",
+        "msg_proteger_sucesso": "PDF protegido criado: {caminho}",
+        "msg_erro_proteger": "Erro ao proteger: {erro}",
+        "msg_marca_texto_nao_informado": "Nenhum texto informado.",
+        "msg_marca_sucesso": "Marca d'água aplicada: {caminho}",
+        "msg_erro_marca": "Erro ao aplicar marca d'água: {erro}",
+        "msg_ocr_sucesso": "PDF pesquisável criado: {caminho}",
+        "msg_tesseract_ausente": "Tesseract ou poppler não encontrados (instale com: pkg install poppler tesseract tesseract-data-por).",
+        "msg_erro_ocr": "Erro no OCR: {erro}",
+        "msg_pressione_continuar": "Pressione qualquer tecla para continuar...",
+        "msg_pressione_voltar": "Pressione qualquer tecla para voltar ao menu...",
+        "msg_ate_mais": "Até mais! 👋",
+    },
+
+    "en": {
+        # Banner
+        "banner_tagline": "File converter • Termux Edition",
+        "banner_stats": "📊 {total} conversion(s) done so far",
+
+        # Main menu
+        "menu_titulo": "What do you want to do?",
+        "menu_converter": "📄  Convert file to PDF",
+        "menu_de_pdf": "🔁  Convert PDF to another format",
+        "menu_lote": "📦  Batch conversion (whole folder)",
+        "menu_ferramentas": "🛠️  PDF tools",
+        "menu_historico": "🕘  View history",
+        "menu_idioma": "🌐  Language / Idioma",
+        "menu_sair": "❌  Exit",
+
+        # Tools submenu
+        "ferramentas_titulo": "Which PDF tool?",
+        "ferramentas_unir": "🧩  Merge several PDFs into one",
+        "ferramentas_comprimir": "🗜️  Compress PDF (reduce size)",
+        "ferramentas_extrair": "✂️  Extract specific pages",
+        "ferramentas_proteger": "🔒  Protect with password",
+        "ferramentas_marca": "💧  Add watermark",
+        "ferramentas_ocr": "🔍  OCR (make PDF searchable)",
+        "ferramentas_voltar": "↩️  Back",
+
+        # Destination format (PDF -> other)
+        "formato_titulo": "Convert the PDF to which format?",
+        "formato_png": "🖼️  PNG",
+        "formato_jpeg": "🖼️  JPEG",
+        "formato_docx": "📝  DOCX (Word)",
+        "formato_txt": "📃  TXT (plain text)",
+
+        # Folder/file selection
+        "pasta_pergunta": "Which folder is the file in?",
+        "pasta_ultimo": "🕘  Last used location",
+        "pasta_manual": "⌨️  Type the path manually",
+        "pasta_lote_manual_prompt": "Full folder path:",
+        "arquivo_manual_prompt": "Full file path:",
+        "arquivo_como_selecionar": "How do you want to select the file?",
+        "arquivo_usar_recente": "📌  Use the most recent ({nome})",
+        "arquivo_digitar_nome": "⌨️  Choose/type the name",
+        "arquivo_selecionar_tab": "Select the file (Tab autocompletes):",
+
+        # Output
+        "saida_pergunta_custom": "Want to choose another name/location for the PDF?",
+        "saida_caminho": "PDF output path:",
+
+        # History
+        "historico_titulo": "Conversion History",
+        "historico_col_data": "Date/Time",
+        "historico_col_arquivo": "File",
+        "historico_col_resultado": "Result",
+        "historico_vazio": "No conversions recorded yet.",
+
+        # Tool-specific prompts
+        "unir_arquivo_n": "File #{n} (Tab autocompletes):",
+        "unir_adicionado": "Added: {caminho}",
+        "unir_outro": "Add another PDF?",
+        "compressao_titulo": "Which compression level?",
+        "compressao_leve": "🔹  Light (best quality, prepress)",
+        "compressao_medio": "🔸  Medium (printer)",
+        "compressao_forte": "🔻  Strong (ebook, good balance)",
+        "compressao_maxima": "⚡  Maximum (smallest file, screen)",
+        "paginas_pergunta": "Which pages? (e.g. 1-3,5,8-10)",
+        "senha_pergunta": "Type the password to protect the PDF:",
+        "marca_texto_pergunta": "Watermark text:",
+        "ocr_idioma_pergunta": "Language of the text in the PDF (for OCR)?",
+        "ocr_portugues": "🇧🇷  Portuguese",
+        "ocr_ingles": "🇺🇸  English",
+
+        # Language choice
+        "idioma_pergunta": "Escolha o idioma / Choose the language:",
+        "idioma_pt": "🇧🇷  Português",
+        "idioma_en": "🇺🇸  English",
+        "idioma_alterado": "Language switched to English.",
+
+        # Spinners
+        "status_convertendo": "Converting...",
+        "status_unindo": "Merging PDFs...",
+        "status_comprimindo": "Compressing...",
+        "status_extraindo": "Extracting pages...",
+        "status_protegendo": "Protecting PDF...",
+        "status_marca": "Adding watermark...",
+        "status_ocr": "Running OCR (this may take a while)...",
+        "status_lote": "Converting",
+
+        # General messages (main.py)
+        "msg_saida_padrao": "Default output: {caminho}",
+        "msg_nenhum_caminho": "No path provided.",
+        "msg_arquivo_nao_existe": "File doesn't exist.",
+        "msg_arquivo_vazio": "File is empty.",
+        "msg_extensao_detectada": "Detected extension: {ext}",
+        "msg_formato_incompativel": "Unsupported format.",
+        "msg_pasta_destino_inexistente": "Destination folder doesn't exist.",
+        "msg_pdf_sucesso": "PDF created successfully: {caminho}",
+        "msg_arquivo_sucesso": "File created successfully: {caminho}",
+        "msg_sem_permissao": "No permission to read or write the file.",
+        "msg_ferramenta_ausente_pandoc": "A required tool (e.g. pandoc) was not found.",
+        "msg_erro_converter": "Error converting: {erro}",
+        "msg_nao_e_pdf": "That file is not a PDF.",
+        "msg_nenhum_formato": "No destination format chosen.",
+        "msg_ferramenta_ausente_poppler": "A required tool was not found (install with: pkg install poppler).",
+        "msg_lib_ausente_docx": "Missing a library for this conversion (install with: pip install python-docx).",
+        "msg_nenhum_arquivo_compativel": "No compatible files found in that folder.",
+        "msg_lote_encontrados": "{n} file(s) found. Converting...",
+        "msg_lote_sucesso": "{n} converted successfully.",
+        "msg_lote_falhas": "{n} failed (check the history for details).",
+        "msg_unir_minimo": "Select at least 2 PDFs to merge.",
+        "msg_unir_sucesso": "PDFs merged into: {caminho}",
+        "msg_erro_unir": "Error merging: {erro}",
+        "msg_pdf_invalido": "Select a valid PDF.",
+        "msg_comprimir_sucesso": "PDF compressed: {caminho} ({reducao:.0f}% smaller)",
+        "msg_ghostscript_ausente": "Ghostscript not found (install with: pkg install ghostscript).",
+        "msg_erro_comprimir": "Error compressing: {erro}",
+        "msg_paginas_nao_informadas": "No page range provided.",
+        "msg_extrair_sucesso": "Pages extracted into: {caminho}",
+        "msg_erro_extrair": "Error extracting pages: {erro}",
+        "msg_senha_nao_informada": "No password provided.",
+        "msg_proteger_sucesso": "Protected PDF created: {caminho}",
+        "msg_erro_proteger": "Error protecting: {erro}",
+        "msg_marca_texto_nao_informado": "No text provided.",
+        "msg_marca_sucesso": "Watermark applied: {caminho}",
+        "msg_erro_marca": "Error applying watermark: {erro}",
+        "msg_ocr_sucesso": "Searchable PDF created: {caminho}",
+        "msg_tesseract_ausente": "Tesseract or poppler not found (install with: pkg install poppler tesseract tesseract-data-por).",
+        "msg_erro_ocr": "OCR error: {erro}",
+        "msg_pressione_continuar": "Press any key to continue...",
+        "msg_pressione_voltar": "Press any key to go back to the menu...",
+        "msg_ate_mais": "See you later! 👋",
+    },
+}
