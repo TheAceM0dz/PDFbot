@@ -138,5 +138,35 @@
     "arquivo": "/data/data/com.termux/files/home/storage/documents",
     "resultado": "Erro - formato não compatível",
     "hora": "08/07/2026 08:47:13"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/1000254685.png",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 09:31:50"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/1000254685.png",
+    "resultado": "Erro - não é PDF",
+    "hora": "08/07/2026 09:46:32"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/foto_teste.pdf",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 09:49:07"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/1000254685.png",
+    "resultado": "Sucesso",
+    "hora": "08/07/2026 09:50:10"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage",
+    "resultado": "Erro - formato não compatível",
+    "hora": "10/07/2026 08:22:57"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/1000254685.png",
+    "resultado": "Sucesso",
+    "hora": "10/07/2026 08:24:43"
   }
 ]

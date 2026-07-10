@@ -217,16 +217,105 @@ ESTILO_MENU = Style([
 # ------------------------------------------------------------------
 
 def print_sucesso(msg):
-    console.print(f"[bold green]✔ {msg}[/bold green]")
+    console.print(Panel(f"✔ {msg}", border_style="green", expand=False))
 
 def print_erro(msg):
-    console.print(f"[bold red]✘ {msg}[/bold red]")
+    console.print(Panel(f"✘ {msg}", border_style="red", expand=False))
 
 def print_info(msg):
-    console.print(f"[bold cyan]ℹ {msg}[/bold cyan]")
+    console.print(Panel(f"ℹ {msg}", border_style="cyan", expand=False))
 
 def print_painel(titulo, conteudo, cor="magenta"):
     console.print(Panel(conteudo, title=titulo, border_style=cor, expand=False))
+
+
+# ------------------------------------------------------------------
+# Breadcrumb (trilha de navegação)
+# ------------------------------------------------------------------
+
+def trilha(*partes):
+    caminho = " › ".join(partes)
+    console.print(f"[dim]{caminho}[/dim]")
+
+
+# ------------------------------------------------------------------
+# Preview do arquivo antes de processar
+# ------------------------------------------------------------------
+
+def formatar_tamanho(num_bytes):
+    tamanho = float(num_bytes)
+    for unidade in ["B", "KB", "MB", "GB"]:
+        if tamanho < 1024:
+            return f"{tamanho:.0f} {unidade}" if unidade == "B" else f"{tamanho:.1f} {unidade}"
+        tamanho /= 1024
+    return f"{tamanho:.1f} TB"
+
+def preview_arquivo(caminho):
+    try:
+        tamanho = os.path.getsize(caminho)
+    except OSError:
+        tamanho = 0
+    extensao = os.path.splitext(caminho)[1].lower()
+
+    linhas = [
+        f"[bold]{t('preview_nome')}:[/bold] {os.path.basename(caminho)}",
+        f"[bold]{t('preview_tamanho')}:[/bold] {formatar_tamanho(tamanho)}",
+        f"[bold]{t('preview_tipo')}:[/bold] {extensao or '?'}",
+    ]
+
+    if extensao == ".pdf":
+        try:
+            from pypdf import PdfReader
+            paginas = len(PdfReader(caminho).pages)
+            linhas.append(f"[bold]{t('preview_paginas')}:[/bold] {paginas}")
+        except Exception:
+            pass
+
+    console.print(
+        Panel("\n".join(linhas), title=f"📄 {t('preview_titulo')}", border_style="cyan", expand=False)
+    )
+
+
+# ------------------------------------------------------------------
+# Resumo/confirmação antes de executar a operação
+# ------------------------------------------------------------------
+
+def painel_resumo(itens, titulo=None):
+    if titulo is None:
+        titulo = t("resumo_titulo")
+    linhas = [f"[bold]{chave}:[/bold] {valor}" for chave, valor in itens.items()]
+    console.print(Panel("\n".join(linhas), title=f"📋 {titulo}", border_style="yellow", expand=False))
+
+def confirmar_resumo(itens, titulo=None):
+    painel_resumo(itens, titulo)
+    resposta = questionary.confirm(
+        t("resumo_confirmar"), default=True, style=ESTILO_MENU
+    ).ask()
+    return bool(resposta)
+
+
+# ------------------------------------------------------------------
+# Tela de despedida com resumo da sessão
+# ------------------------------------------------------------------
+
+def tela_despedida(sucessos=0, falhas=0):
+    linhas = []
+    if sucessos == 0 and falhas == 0:
+        linhas.append(t("despedida_nenhuma"))
+    else:
+        if sucessos:
+            linhas.append(f"[green]{t('despedida_sucessos', n=sucessos)}[/green]")
+        if falhas:
+            linhas.append(f"[red]{t('despedida_falhas', n=falhas)}[/red]")
+
+    console.print(
+        Panel(
+            "\n".join(linhas),
+            title=f"👋 {t('despedida_titulo')}",
+            border_style="magenta",
+            expand=False,
+        )
+    )
 
 
 # ------------------------------------------------------------------

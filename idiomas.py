@@ -133,6 +133,49 @@ TEXTOS = {
         "msg_pressione_continuar": "Pressione qualquer tecla para continuar...",
         "msg_pressione_voltar": "Pressione qualquer tecla para voltar ao menu...",
         "msg_ate_mais": "Até mais! 👋",
+
+        # Breadcrumb (trilha de navegação)
+        "trilha_menu": "Menu",
+        "trilha_converter": "Converter para PDF",
+        "trilha_de_pdf": "Converter PDF",
+        "trilha_lote": "Lote",
+        "trilha_ferramentas": "Ferramentas",
+        "trilha_unir": "Unir",
+        "trilha_comprimir": "Comprimir",
+        "trilha_extrair": "Extrair páginas",
+        "trilha_proteger": "Proteger",
+        "trilha_marca": "Marca d'água",
+        "trilha_ocr": "OCR",
+        "trilha_historico": "Histórico",
+        "trilha_idioma": "Idioma",
+
+        # Preview do arquivo
+        "preview_titulo": "Arquivo selecionado",
+        "preview_nome": "Nome",
+        "preview_tamanho": "Tamanho",
+        "preview_paginas": "Páginas",
+        "preview_tipo": "Tipo",
+
+        # Resumo/confirmação antes de executar
+        "resumo_titulo": "Confirme a operação",
+        "resumo_confirmar": "Confirma?",
+        "resumo_arquivo": "Arquivo",
+        "resumo_arquivos": "Arquivos",
+        "resumo_formato_saida": "Formato de saída",
+        "resumo_destino": "Destino",
+        "resumo_nivel": "Nível",
+        "resumo_paginas": "Páginas",
+        "resumo_idioma_ocr": "Idioma OCR",
+        "resumo_texto_marca": "Texto",
+        "resumo_pasta": "Pasta",
+        "resumo_qtd_arquivos": "Arquivos encontrados",
+        "operacao_cancelada": "Operação cancelada.",
+
+        # Tela de despedida
+        "despedida_titulo": "Até a próxima!",
+        "despedida_sucessos": "✔ {n} operação(ões) concluída(s) com sucesso",
+        "despedida_falhas": "✘ {n} operação(ões) com erro",
+        "despedida_nenhuma": "Nenhuma operação realizada nessa sessão.",
     },
 
     "en": {
@@ -264,5 +307,48 @@ TEXTOS = {
         "msg_pressione_continuar": "Press any key to continue...",
         "msg_pressione_voltar": "Press any key to go back to the menu...",
         "msg_ate_mais": "See you later! 👋",
+
+        # Breadcrumb
+        "trilha_menu": "Menu",
+        "trilha_converter": "Convert to PDF",
+        "trilha_de_pdf": "Convert PDF",
+        "trilha_lote": "Batch",
+        "trilha_ferramentas": "Tools",
+        "trilha_unir": "Merge",
+        "trilha_comprimir": "Compress",
+        "trilha_extrair": "Extract pages",
+        "trilha_proteger": "Protect",
+        "trilha_marca": "Watermark",
+        "trilha_ocr": "OCR",
+        "trilha_historico": "History",
+        "trilha_idioma": "Language",
+
+        # File preview
+        "preview_titulo": "Selected file",
+        "preview_nome": "Name",
+        "preview_tamanho": "Size",
+        "preview_paginas": "Pages",
+        "preview_tipo": "Type",
+
+        # Summary/confirmation before running
+        "resumo_titulo": "Confirm the operation",
+        "resumo_confirmar": "Confirm?",
+        "resumo_arquivo": "File",
+        "resumo_arquivos": "Files",
+        "resumo_formato_saida": "Output format",
+        "resumo_destino": "Destination",
+        "resumo_nivel": "Level",
+        "resumo_paginas": "Pages",
+        "resumo_idioma_ocr": "OCR language",
+        "resumo_texto_marca": "Text",
+        "resumo_pasta": "Folder",
+        "resumo_qtd_arquivos": "Files found",
+        "operacao_cancelada": "Operation cancelled.",
+
+        # Goodbye screen
+        "despedida_titulo": "See you next time!",
+        "despedida_sucessos": "✔ {n} operation(s) completed successfully",
+        "despedida_falhas": "✘ {n} operation(s) with errors",
+        "despedida_nenhuma": "No operations were performed this session.",
     },
 }
