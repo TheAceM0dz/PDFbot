@@ -168,5 +168,15 @@
     "arquivo": "/data/data/com.termux/files/home/storage/downloads/1000254685.png",
     "resultado": "Sucesso",
     "hora": "10/07/2026 08:24:43"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/teste.pdf",
+    "resultado": "Erro - espeak ausente",
+    "hora": "10/07/2026 18:58:22"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/teste.pdf",
+    "resultado": "Sucesso - áudio",
+    "hora": "10/07/2026 19:00:54"
   }
 ]

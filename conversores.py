@@ -4,23 +4,39 @@ import tempfile
 import subprocess
 from PIL import Image
 
-def converter_docx(caminho, saida):
-    subprocess.run(["pandoc", caminho, "-o", saida, "--pdf-engine=tectonic"], check=True)
+def converter_docx(caminho, saida, toc=False):
+    comando = ["pandoc", caminho, "-o", saida, "--pdf-engine=tectonic"]
+    if toc:
+        comando.append("--toc")
+    subprocess.run(comando, check=True)
 
-def converter_markdown(caminho, saida):
-    subprocess.run(["pandoc", caminho, "-o", saida, "--pdf-engine=tectonic"], check=True)
+def converter_markdown(caminho, saida, toc=False):
+    comando = ["pandoc", caminho, "-o", saida, "--pdf-engine=tectonic"]
+    if toc:
+        comando.append("--toc")
+    subprocess.run(comando, check=True)
 
-def converter_html(caminho, saida):
-    subprocess.run(["pandoc", caminho, "-o", saida, "--pdf-engine=tectonic"], check=True)
+def converter_html(caminho, saida, toc=False):
+    comando = ["pandoc", caminho, "-o", saida, "--pdf-engine=tectonic"]
+    if toc:
+        comando.append("--toc")
+    subprocess.run(comando, check=True)
 
-def converter_txt(caminho, saida):
-    subprocess.run(["pandoc", caminho, "-o", saida, "--pdf-engine=tectonic"], check=True)
+def converter_txt(caminho, saida, toc=False):
+    comando = ["pandoc", caminho, "-o", saida, "--pdf-engine=tectonic"]
+    if toc:
+        comando.append("--toc")
+    subprocess.run(comando, check=True)
 
-def converter_imagem(caminho, saida):
+def converter_imagem(caminho, saida, tamanho_max=2000, qualidade=85):
+    """Reduz automaticamente fotos muito grandes (comuns em câmeras de
+    celular) antes de embutir no PDF, deixando o arquivo final bem menor."""
     img = Image.open(caminho)
     if img.mode in ("RGBA", "P"):
         img = img.convert("RGB")
-    img.save(saida)
+    if max(img.size) > tamanho_max:
+        img.thumbnail((tamanho_max, tamanho_max))
+    img.save(saida, quality=qualidade, optimize=True)
 
 
 # ------------------------------------------------------------------
