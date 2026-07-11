@@ -1,7 +1,7 @@
 import os
 
 FORMATOS_SUPORTADOS = [
-    ".docx", ".txt", ".md", ".html",
+    ".docx", ".txt", ".md", ".html", ".epub",
     ".jpg", ".jpeg", ".png"
 ]
 

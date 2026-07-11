@@ -178,5 +178,20 @@
     "arquivo": "/data/data/com.termux/files/home/storage/downloads/teste.pdf",
     "resultado": "Sucesso - áudio",
     "hora": "10/07/2026 19:00:54"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/dickens-no-thoroughfare.epub",
+    "resultado": "Erro - Command '['pandoc', '/data/data/com.termux/files/home/storage/downloads/dickens-no-thoroughfare.epub', '-o', '/data/data/com.termux/files/home/storage/downloads/dickens-no-thoroughfare.pdf', '--pdf-engine=tectonic', '--toc']' returned non-zero exit status 43.",
+    "hora": "11/07/2026 08:33:26"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/e-book-teste.epub",
+    "resultado": "Erro - warning: JPEG: Inconsistent resolution may have been specified in Exif and JFIF: 0x0 - 1x1\nerror: texput.tex:104: Dimension too large\nerror: halted on potentially-recoverable error as specified\nError producing PDF.\nnote: reading from standard input; outputs will appear under the base name \"texput\"\nnote: Running TeX ...",
+    "hora": "11/07/2026 08:38:35"
+  },
+  {
+    "arquivo": "/data/data/com.termux/files/home/storage/downloads/e-book-teste.epub",
+    "resultado": "Sucesso - EPUB para PDF",
+    "hora": "11/07/2026 08:41:32"
   }
 ]

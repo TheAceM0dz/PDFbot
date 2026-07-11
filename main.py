@@ -11,6 +11,7 @@ from conversores import (
     converter_txt,
     converter_markdown,
     converter_html,
+    converter_epub,
     converter_imagem,
     converter_pdf_para_png,
     converter_pdf_para_jpeg,
@@ -28,6 +29,7 @@ from historico import salvar_historico, carregar_historico
 from lote import listar_arquivos_compativeis
 import ferramentas_pdf as fpdf
 import conversao_extra as cextra
+import diagnostico
 
 import ui
 
@@ -36,6 +38,7 @@ conversores = {
     ".txt": converter_txt,
     ".md": converter_markdown,
     ".html": converter_html,
+    ".epub": converter_epub,
     ".jpg": converter_imagem,
     ".jpeg": converter_imagem,
     ".png": converter_imagem
@@ -50,7 +53,7 @@ conversores_de_pdf = {
 }
 
 # Conversores que aceitam sumário automático (--toc). Imagens não têm texto.
-EXTENSOES_COM_TOC = {".docx", ".md", ".html", ".txt"}
+EXTENSOES_COM_TOC = {".docx", ".md", ".html", ".txt", ".epub"}
 
 # Estado da sessão atual: contadores + último arquivo gerado (pro "desfazer")
 _sessao = {"sucessos": 0, "falhas": 0, "ultima_saida": None}
@@ -948,6 +951,40 @@ def extra_epub():
         _marcar_falha()
 
 
+def extra_epub_para_pdf():
+    ui.trilha(ui.t("trilha_menu"), ui.t("trilha_extras"), ui.t("trilha_epub_para_pdf"))
+    arquivo = ui.perguntar_caminho_arquivo()
+    if not arquivo or not arquivo_existe(arquivo) or obter_extensao(arquivo) != ".epub":
+        ui.print_erro(ui.t("msg_formato_incompativel"))
+        return
+
+    ui.preview_arquivo(arquivo)
+
+    toc = ui.perguntar_toc()
+    padrao = os.path.splitext(arquivo)[0] + ".pdf"
+    saida = ui.nome_seguro(ui.perguntar_caminho_saida(padrao))
+
+    confirmado = ui.confirmar_resumo({
+        ui.t("resumo_arquivo"): os.path.basename(arquivo),
+        ui.t("resumo_destino"): saida,
+    })
+    if not confirmado:
+        ui.print_info(ui.t("operacao_cancelada"))
+        return
+
+    try:
+        with ui.console.status(f"[bold cyan]{ui.t('status_convertendo')}[/bold cyan]", spinner="dots"):
+            converter_epub(arquivo, saida, toc=toc)
+        ui.print_sucesso(ui.t("msg_epub_para_pdf_sucesso", caminho=saida))
+        salvar_historico(arquivo, "Sucesso - EPUB para PDF")
+        ui.salvar_ultimo_diretorio(saida)
+        _marcar_sucesso(saida)
+    except Exception as e:
+        ui.print_erro(ui.t("msg_erro_epub_para_pdf", erro=e))
+        salvar_historico(arquivo, f"Erro - {e}")
+        _marcar_falha()
+
+
 def extra_audio():
     ui.trilha(ui.t("trilha_menu"), ui.t("trilha_extras"), ui.t("trilha_audio"))
     arquivo = ui.perguntar_caminho_arquivo()
@@ -995,6 +1032,8 @@ def menu_extras():
 
         if escolha == "epub":
             extra_epub()
+        elif escolha == "epub_para_pdf":
+            extra_epub_para_pdf()
         elif escolha == "audio":
             extra_audio()
         elif escolha == "voltar" or escolha is None:
@@ -1093,6 +1132,44 @@ def desfazer_ultima_acao():
 # Menu principal
 # ------------------------------------------------------------------
 
+# ------------------------------------------------------------------
+# Checagem inicial de dependências (roda uma vez, antes do menu)
+# ------------------------------------------------------------------
+
+def verificar_dependencias_inicial():
+    if not ui.perguntar_verificar_dependencias():
+        return
+
+    resultados = diagnostico.verificar_tudo()
+    ui.console.print(ui.tabela_diagnostico(resultados))
+
+    faltando = [r for r in resultados if not r["instalado"]]
+    if not faltando:
+        ui.print_sucesso(ui.t("diag_tudo_ok"))
+        return
+
+    ui.print_erro(ui.t("diag_faltam_n", n=len(faltando)))
+
+    if not ui.perguntar_instalar_faltantes():
+        ui.print_info(ui.t("diag_pular_aviso"))
+        return
+
+    sucessos = 0
+    for item in faltando:
+        with ui.console.status(
+            f"[bold cyan]{ui.t('diag_instalando', nome=item['nome'])}[/bold cyan]",
+            spinner="dots",
+        ):
+            ok, erro = diagnostico.instalar_item(item)
+        if ok:
+            ui.print_sucesso(ui.t("diag_instalado_sucesso", nome=item["nome"]))
+            sucessos += 1
+        else:
+            ui.print_erro(ui.t("diag_instalado_falha", nome=item["nome"], erro=erro))
+
+    ui.print_info(ui.t("diag_resumo_final", sucesso=sucessos, total=len(faltando)))
+
+
 def menu():
     while True:
         ui.banner()
@@ -1124,4 +1201,9 @@ def menu():
 
 
 if __name__ == "__main__":
+    ui.limpar_tela()
+    if "idioma" not in ui.carregar_config():
+        ui.perguntar_idioma()
+        ui.limpar_tela()
+    verificar_dependencias_inicial()
     menu()

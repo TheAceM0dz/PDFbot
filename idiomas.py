@@ -134,6 +134,26 @@ TEXTOS = {
         "msg_pressione_voltar": "Pressione qualquer tecla para voltar ao menu...",
         "msg_ate_mais": "Até mais! 👋",
 
+        # Diagnóstico de dependências (checagem inicial)
+        "diag_pergunta_inicial": "Deseja verificar se todas as dependências estão instaladas?",
+        "diag_titulo": "Diagnóstico de dependências",
+        "diag_col_nome": "Componente",
+        "diag_col_tipo": "Tipo",
+        "diag_col_status": "Status",
+        "diag_tipo_sistema": "Sistema (pkg)",
+        "diag_tipo_python": "Python (pip)",
+        "diag_tipo_dado": "Dado (idioma)",
+        "diag_ok": "✔ instalado",
+        "diag_faltando": "✘ faltando",
+        "diag_tudo_ok": "Tudo certo! Todas as dependências estão instaladas.",
+        "diag_faltam_n": "{n} dependência(s) faltando.",
+        "diag_perguntar_instalar": "Deseja instalar automaticamente o que está faltando?",
+        "diag_instalando": "Instalando {nome}...",
+        "diag_instalado_sucesso": "{nome} instalado com sucesso.",
+        "diag_instalado_falha": "Falha ao instalar {nome}: {erro}",
+        "diag_resumo_final": "Instalação concluída: {sucesso} de {total} com sucesso.",
+        "diag_pular_aviso": "Ok, seguindo sem instalar. Algumas funções podem falhar até você instalar manualmente.",
+
         # Breadcrumb (trilha de navegação)
         "trilha_menu": "Menu",
         "trilha_converter": "Converter para PDF",
@@ -207,6 +227,7 @@ TEXTOS = {
         # Submenu Extras
         "extras_titulo": "O que você quer fazer?",
         "extras_epub": "📚  PDF → EPUB",
+        "extras_epub_para_pdf": "📚  EPUB → PDF",
         "extras_audio": "🔊  PDF → Áudio",
 
         # Presets
@@ -306,6 +327,8 @@ TEXTOS = {
         "epub_autor_pergunta": "Autor (opcional):",
         "msg_epub_sucesso": "EPUB criado: {caminho}",
         "msg_erro_epub": "Erro ao gerar EPUB: {erro}",
+        "msg_epub_para_pdf_sucesso": "PDF criado a partir do EPUB: {caminho}",
+        "msg_erro_epub_para_pdf": "Erro ao converter EPUB para PDF: {erro}",
         "audio_idioma_pergunta": "Idioma do texto (pra voz)?",
         "msg_audio_sucesso": "Áudio criado: {caminho}",
         "msg_erro_audio": "Erro ao gerar áudio: {erro}",
@@ -335,6 +358,7 @@ TEXTOS = {
         "trilha_verificar": "Verificar integridade",
         "trilha_extras": "Extras",
         "trilha_epub": "PDF → EPUB",
+        "trilha_epub_para_pdf": "EPUB → PDF",
         "trilha_audio": "PDF → Áudio",
         "trilha_grade": "Colagem de fotos",
         "trilha_presets": "Presets",
@@ -472,6 +496,26 @@ TEXTOS = {
         "msg_pressione_voltar": "Press any key to go back to the menu...",
         "msg_ate_mais": "See you later! 👋",
 
+        # Dependency diagnostics (startup check)
+        "diag_pergunta_inicial": "Do you want to check if all dependencies are installed?",
+        "diag_titulo": "Dependency diagnostics",
+        "diag_col_nome": "Component",
+        "diag_col_tipo": "Type",
+        "diag_col_status": "Status",
+        "diag_tipo_sistema": "System (pkg)",
+        "diag_tipo_python": "Python (pip)",
+        "diag_tipo_dado": "Data (language)",
+        "diag_ok": "✔ installed",
+        "diag_faltando": "✘ missing",
+        "diag_tudo_ok": "All good! Every dependency is installed.",
+        "diag_faltam_n": "{n} dependencie(s) missing.",
+        "diag_perguntar_instalar": "Do you want to automatically install what's missing?",
+        "diag_instalando": "Installing {nome}...",
+        "diag_instalado_sucesso": "{nome} installed successfully.",
+        "diag_instalado_falha": "Failed to install {nome}: {erro}",
+        "diag_resumo_final": "Installation finished: {sucesso} of {total} succeeded.",
+        "diag_pular_aviso": "Ok, continuing without installing. Some features may fail until you install manually.",
+
         # Breadcrumb
         "trilha_menu": "Menu",
         "trilha_converter": "Convert to PDF",
@@ -545,6 +589,7 @@ TEXTOS = {
         # Extras submenu
         "extras_titulo": "What do you want to do?",
         "extras_epub": "📚  PDF → EPUB",
+        "extras_epub_para_pdf": "📚  EPUB → PDF",
         "extras_audio": "🔊  PDF → Audio",
 
         # Presets
@@ -644,6 +689,8 @@ TEXTOS = {
         "epub_autor_pergunta": "Author (optional):",
         "msg_epub_sucesso": "EPUB created: {caminho}",
         "msg_erro_epub": "Error creating EPUB: {erro}",
+        "msg_epub_para_pdf_sucesso": "PDF created from EPUB: {caminho}",
+        "msg_erro_epub_para_pdf": "Error converting EPUB to PDF: {erro}",
         "audio_idioma_pergunta": "Text language (for the voice)?",
         "msg_audio_sucesso": "Audio created: {caminho}",
         "msg_erro_audio": "Error creating audio: {erro}",
@@ -673,6 +720,7 @@ TEXTOS = {
         "trilha_verificar": "Check integrity",
         "trilha_extras": "Extras",
         "trilha_epub": "PDF → EPUB",
+        "trilha_epub_para_pdf": "EPUB → PDF",
         "trilha_audio": "PDF → Audio",
         "trilha_grade": "Photo collage",
         "trilha_presets": "Presets",

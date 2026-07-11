@@ -11,7 +11,7 @@ import json
 import colorsys
 from datetime import datetime
 
-from rich.console import Console
+from rich.console import Console, Group
 from rich.text import Text
 from rich.panel import Panel
 from rich.table import Table
@@ -27,6 +27,17 @@ import historico as _historico
 from idiomas import TEXTOS
 
 console = Console()
+
+def limpar_tela():
+    """Limpa a tela visível E o scrollback do terminal (histórico acima),
+    que o console.clear() do Rich sozinho não apaga em muitos terminais
+    Android, deixando aquele resto de comando/output antigo "grudado" em cima."""
+    console.clear()
+    try:
+        console.file.write("\x1b[3J")
+        console.file.flush()
+    except Exception:
+        pass
 
 CONFIG_PATH = os.path.expanduser("~/.pdfbot_config.json")
 RAIZ_STORAGE = "/data/data/com.termux/files/home/storage/"
@@ -168,32 +179,39 @@ def _arte_titulo(texto="PDFBOT"):
     return linhas
 
 def banner():
-    """Mostra o título PDFBOT com moldura e gradiente estilo RGB
-    (a cor muda a cada retorno ao menu, não a cada tecla)."""
+    """Mostra o título PDFBOT como um único cartão (borda simples),
+    com gradiente estilo RGB que muda a cada retorno ao menu."""
     hue = _proximo_hue()
     linhas = _arte_titulo()
     texto_titulo = _gradiente(linhas, hue, span=0.9, sat=0.9)
 
-    r, g, b = colorsys.hsv_to_rgb(hue, 0.7, 1.0)
+    r, g, b = colorsys.hsv_to_rgb(hue, 0.6, 1.0)
     cor_moldura = f"#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}"
 
-    conteudo = Align.center(texto_titulo)
-
-    console.clear()
-    console.print(
-        Panel(
-            conteudo,
-            border_style=cor_moldura,
-            box=box.DOUBLE,
-            padding=(0, 2),
-        )
-    )
-    console.print(Align.center(Text(t("banner_tagline"), style="dim italic")))
-    console.print(Align.center(Text("by TheAceModz", style=f"bold {cor_moldura}")))
+    rodape = Text(justify="center")
+    rodape.append(t("banner_tagline"), style="dim italic")
+    rodape.append("\n")
+    rodape.append("by TheAceModz", style=f"bold {cor_moldura}")
 
     total = len(_historico.carregar_historico())
-    console.print(Rule(style=f"dim {cor_moldura}"))
-    console.print(Align.center(Text(t("banner_stats", total=total), style="dim")))
+    stats = Text(t("banner_stats", total=total), style="dim", justify="center")
+
+    cartao = Group(
+        Align.center(texto_titulo),
+        Align.center(rodape),
+        Rule(style=f"dim {cor_moldura}"),
+        Align.center(stats),
+    )
+
+    limpar_tela()
+    console.print(
+        Panel(
+            cartao,
+            border_style=cor_moldura,
+            box=box.ROUNDED,
+            padding=(1, 2),
+        )
+    )
     console.print()
 
 
@@ -503,6 +521,7 @@ def menu_extras():
         t("extras_titulo"),
         choices=[
             questionary.Choice(t("extras_epub"), value="epub"),
+            questionary.Choice(t("extras_epub_para_pdf"), value="epub_para_pdf"),
             questionary.Choice(t("extras_audio"), value="audio"),
             questionary.Choice(t("menu_voltar"), value="voltar"),
         ],
@@ -922,3 +941,41 @@ def perguntar_escolher_preset():
         qmark="⭐",
         use_shortcuts=True,
     ).ask()
+
+
+# ------------------------------------------------------------------
+# Diagnóstico de dependências (checagem inicial)
+# ------------------------------------------------------------------
+
+def perguntar_verificar_dependencias():
+    return bool(questionary.confirm(
+        t("diag_pergunta_inicial"), default=True, style=ESTILO_MENU
+    ).ask())
+
+
+def tabela_diagnostico(resultados):
+    tabela = Table(title=t("diag_titulo"), border_style="cyan", expand=False)
+    tabela.add_column(t("diag_col_nome"), style="white")
+    tabela.add_column(t("diag_col_tipo"), style="dim")
+    tabela.add_column(t("diag_col_status"), style="bold")
+
+    tipos = {
+        "sistema": t("diag_tipo_sistema"),
+        "python": t("diag_tipo_python"),
+        "dado": t("diag_tipo_dado"),
+    }
+
+    for item in resultados:
+        if item["instalado"]:
+            status = f"[green]{t('diag_ok')}[/green]"
+        else:
+            status = f"[red]{t('diag_faltando')}[/red]"
+        tabela.add_row(item["nome"], tipos.get(item["tipo"], item["tipo"]), status)
+
+    return tabela
+
+
+def perguntar_instalar_faltantes():
+    return bool(questionary.confirm(
+        t("diag_perguntar_instalar"), default=True, style=ESTILO_MENU
+    ).ask())
